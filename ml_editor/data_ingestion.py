@@ -2,6 +2,8 @@ import xml.etree.ElementTree as Elt
 from tqdm import tqdm
 from bs4 import BeautifulSoup
 import pandas as pd
+from pathlib import Path
+import os
 
 
 def parse_xml_to_csv(path, save_path=None):
@@ -31,3 +33,26 @@ def parse_xml_to_csv(path, save_path=None):
         df.to_csv(save_path)
 
     return df
+
+
+def get_data_from_dump(site_name, load_existing=True):
+    """
+    load .xml dump from site, parse it to csv, serialize it
+    :param site_name: stackexchange website name
+    :param load_existing: load existing data or recreate it
+    :return: pandas DataFrame
+    """
+
+    data_path = Path("data")
+    dump_name = site_name + ".stackexchange.com/Posts.xml"
+    file_name = site_name + ".csv"
+    dump_path = data_path/dump_name
+    file_path = data_path/file_name
+
+    if not (load_existing and os.path.isfile(file_path)):
+        data = parse_xml_to_csv(dump_path)
+        data.to_csv(file_path)
+    else:
+        data = pd.DataFrame.from_csv(file_path)
+
+    return data
