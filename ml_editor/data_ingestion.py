@@ -43,11 +43,12 @@ def get_data_from_dump(site_name, load_existing=True):
     :return: pandas DataFrame
     """
 
-    data_path = Path("data")
+    data_path = Path().absolute().parent
+    data_folder = "data"
     dump_name = site_name + ".stackexchange.com/Posts.xml"
     file_name = site_name + ".csv"
-    dump_path = data_path/dump_name
-    file_path = data_path/file_name
+    dump_path = data_path/data_folder/dump_name
+    file_path = data_path/data_folder/file_name
 
     if not (load_existing and os.path.isfile(file_path)):
         data = parse_xml_to_csv(dump_path)
