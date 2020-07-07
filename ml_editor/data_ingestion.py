@@ -54,6 +54,6 @@ def get_data_from_dump(site_name, load_existing=True):
         data = parse_xml_to_csv(dump_path)
         data.to_csv(file_path)
     else:
-        data = pd.DataFrame.from_csv(file_path)
+        data = pd.read_csv(file_path)
 
     return data
